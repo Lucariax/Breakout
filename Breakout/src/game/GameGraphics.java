@@ -11,8 +11,10 @@ import javax.swing.SwingUtilities;
 import game.DrawingPanel.DPMouseEventHandler;
 
 public class GameGraphics {
+	private Ball ball;
 	private Graphics g;
 	private Scroller s;
+	private Collision ballC, scrollC, blockC;
 	private int level;
 	private DrawingPanel p;
 	private MouseListen mL;
@@ -20,6 +22,8 @@ public class GameGraphics {
 	//private MouseListener mL;
 	private int x;
 	public GameGraphics(DrawingPanel p) {
+		ballC = new Collision(3, 3, );
+		ball = new Ball();
 		level = 1;
 		this.p = p;
 		mL = new MouseListen(p);
@@ -67,12 +71,7 @@ public class GameGraphics {
 			a += i.getWidth() + 8;
 			counter++;
 		}
-		//drawBall();
-	}
-	public int drawBall() {
 		
-		for(int i = 0; i < p.getHeight(); i++) {
-			p.sleep(1);
-		}
+		ball.drawBall(g, () );
 	}
 }
