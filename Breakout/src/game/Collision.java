@@ -16,14 +16,14 @@ public class Collision {
 	}
 	public boolean isCollided(Collision c) {
 		boolean r = false;
-		r = (new Rectangle(h, w, x, y).intersects(new Rectangle(c.getHeight(), c.getWidth(), c.getX(), c.getY())));
+		r = (new Rectangle(x, y, w, h).intersects(new Rectangle(c.getX(), c.getY(), c.getWidth(), c.getHeight())));
 		if(r && t.equals("Ball") && c.getType().equals("Block")) {
 			condition = 1;
 			// delete Block and reverse direction of ball
 		} else if(r && t.equals("Ball") && c.getType().equals("Scroller")) {
 			condition = 2;
 		}
-		return true;
+		return r;
 	}
 	public int getX() {
 		return x;

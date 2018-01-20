@@ -4,7 +4,7 @@ import java.awt.Graphics;
 public class Block {
 	private Graphics g;
 	private Color c;
-	private int w, h;
+	private int w, h, x, y;
 	public Block(Graphics g, Color c, int w, int h) {
 		this.g = g;
 		this.c = c;
@@ -15,11 +15,6 @@ public class Block {
 		g.setColor(c);
 		g.fillRect(x, y, w, h); //TODO: Find block size.
 	}
-
-	public boolean isDestroyed() {
-		boolean r = true;
-		return r;
-	}
 	public Color getColor() {
 		return c;
 	}
@@ -28,5 +23,17 @@ public class Block {
 	}
 	public int getHeight() {
 		return h;
+	}
+	public void setX(int a) {
+		x = a;
+	}
+	public void setY(int b) {
+		y = b;
+	}
+	public int getX() {
+		return x;
+	}
+	public int getY() {
+		return y;
 	}
 }
