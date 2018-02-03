@@ -8,6 +8,7 @@ public class Main {
 		breakout.runGame();
 		while(true) {
 			breakout.runIndefinetly();
+			breakout.ballPosition();
 		}
 	}
 }

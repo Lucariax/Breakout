@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -15,13 +16,17 @@ public class GameGraphics {
 	private Graphics g;
 	private Scroller s;
 	private Collision ballC, scrollC, blockC;
-	private int level;
+	private int level, score;
 	private DrawingPanel p;
 	private MouseListen mL;
 	private ArrayList<Block> b;
-	private double x = 288, constant = 1, y = 512;
+	private double x = 288, constant = 1, y = 512.0, constantX = 1;
+	public boolean inverted;
 	//private MouseListener mL;
 	public GameGraphics(DrawingPanel p) {
+		inverted = false;
+		constantX = 0;
+		score = 0;
 		ball = new Ball();
 		ball.setX(501);
 		ball.setY(278);
@@ -47,14 +52,17 @@ public class GameGraphics {
 			}
 			b.add(new Block(g, c, 65, 20));
 		}
-		ballC = new Collision(8, 8, 505, 280, "Ball");
-		scrollC = new Collision(120, 10, s.getX(), s.getY(), "Scroller");
+		//ballC = new Collision(8, 8, 505, 280, "Ball");
+		//scrollC = new Collision(120, 10, s.getX(), s.getY(), "Scroller");
 		blockC = new Collision(b.get(0).getWidth(), b.get(0).getHeight(), 0, 0, "Block");
+		ballC = new Collision(10, 10, 512, (int)(x), "Ball");
+		scrollC = new Collision(10, 120, s.getX(), s.getY(), "Scroller");
 	}
 	public Graphics getGraphics() {
 		return g;
 	}
 	public void runGame() {
+		
 		p.setVisible(true);
 		p.setBackground(Color.BLACK);
 		int a = 4, counter = 0, y = 60, maxH = 0;
@@ -82,20 +90,7 @@ public class GameGraphics {
 		p.sleep(2);
 		ball.setY((int)(x + constant));
 		x += constant;
-		ball.drawBall(g, false, -1, b);
-		ballC = new Collision(10, 10, 512, (int)(x), "Ball");
-		scrollC = new Collision(10, 120, s.getX(), s.getY(), "Scroller");
-		if(ball.getY() <= 0) {
-			constant = 1;
-			ball.setCollided(false);
-		}
-		if(ballC.isCollided(scrollC)) {
-			ball.setCollided(true);
-			System.out.println("h");
-			constant = -1;
-			ball.setX((int)(512 + constant));
-			y += constant;
-		}
+		
 		for(int i = 0; i < b.size(); i++) {
 			blockC = new Collision(b.get(i).getHeight(), b.get(i).getWidth(), b.get(i).getX(), b.get(i).getY(), "Block");
 			if(blockC.isCollided(ballC)) {
@@ -104,8 +99,46 @@ public class GameGraphics {
 				g.setColor(Color.BLACK);
 				g.fillRect(b.get(i).getX(), b.get(i).getY(), b.get(i).getWidth(), b.get(i).getHeight());
 				b.remove(i);
-				//score += 200;
+				score += 200;
 			}
+		}
+		g.setFont(new Font("Arial", Font.PLAIN, 32));
+		g.setColor(Color.BLACK);
+		g.fillRect(10, 540, 90, 50);
+		g.setColor(Color.WHITE);
+		g.drawString("" + score, 10, 570);
+		
+	}
+	public void ballPosition() {
+		if(ball.getY() <= 0) {
+			constant = 1;
+			//ball.setCollided(false);
+			inverted = !inverted;
+		}
+		if(ballC.isCollided(scrollC)) {
+			//ball.setCollided(true);
+			constant = -1;
+			//ball.setX((int)(y + 0.5*constant));
+			inverted = !inverted;
+		}
+		if(inverted && y > 0.0) {
+			g.setColor(Color.BLACK);
+			g.fillRect(ball.getX() + 120, ball.getY(), 8, 8);
+			g.setColor(Color.GRAY);
+			ball.setX((int)(y + 0.5*constant));
+			ball.setY((int)(x - 0.5*constantX));
+			g.fillRect(ball.getX() + 120, ball.getY(), 8, 8);
+			y += 0.5*constant;
+			x -= 0.5*constantX;
+		} else {
+			g.setColor(Color.BLACK);
+			g.fillRect(ball.getX() + 120, ball.getY(), 8, 8);
+			g.setColor(Color.GRAY);
+			ball.setX((int)(y - 0.5*constant));
+			ball.setY((int)(x + 0.5*constantX));
+			y -= 0.5*constant;
+			x += 0.5*constantX;
+			g.fillRect(ball.getX() + 120, ball.getY(), 8, 8);
 		}
 	}
 }
