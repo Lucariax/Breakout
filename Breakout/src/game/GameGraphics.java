@@ -52,8 +52,8 @@ public class GameGraphics {
 			}
 			b.add(new Block(g, c, 65, 20));
 		}
-		//ballC = new Collision(8, 8, 505, 280, "Ball");
-		//scrollC = new Collision(120, 10, s.getX(), s.getY(), "Scroller");
+		ballC = new Collision(8, 8, 505, 280, "Ball");
+		scrollC = new Collision(120, 10, s.getX(), s.getY(), "Scroller");
 		blockC = new Collision(b.get(0).getWidth(), b.get(0).getHeight(), 0, 0, "Block");
 		ballC = new Collision(10, 10, 512, (int)(x), "Ball");
 		scrollC = new Collision(10, 120, s.getX(), s.getY(), "Scroller");
@@ -110,23 +110,28 @@ public class GameGraphics {
 		
 	}
 	public void ballPosition() {
+		//System.out.println(scrollC.getX() + "  " + scrollC.getY() + "\n\n" + ballC.getX() + "  " + ballC.getY());
+		System.out.println(ballC.isCollided(scrollC));
+		ballC = new Collision(8, 8, ball.getX(), ball.getY(), "Ball");
+		scrollC = new Collision(120, 10, s.getX(), s.getY(), "Scroller");
 		if(ball.getY() <= 0) {
 			constant = 1;
-			//ball.setCollided(false);
+			ball.setCollided(false);
 			inverted = !inverted;
 		}
 		if(ballC.isCollided(scrollC)) {
-			//ball.setCollided(true);
-			constant = -1;
-			//ball.setX((int)(y + 0.5*constant));
+			System.out.println("H");
+			ball.setCollided(true);
+			constant *= -1;
+			ball.setX((int)(y + 0.5*constant));
 			inverted = !inverted;
 		}
 		if(inverted && y > 0.0) {
 			g.setColor(Color.BLACK);
 			g.fillRect(ball.getX() + 120, ball.getY(), 8, 8);
 			g.setColor(Color.GRAY);
-			ball.setX((int)(y + 0.5*constant));
-			ball.setY((int)(x - 0.5*constantX));
+			ball.setX((int)(y));
+			ball.setY((int)(x));
 			g.fillRect(ball.getX() + 120, ball.getY(), 8, 8);
 			y += 0.5*constant;
 			x -= 0.5*constantX;
@@ -134,8 +139,8 @@ public class GameGraphics {
 			g.setColor(Color.BLACK);
 			g.fillRect(ball.getX() + 120, ball.getY(), 8, 8);
 			g.setColor(Color.GRAY);
-			ball.setX((int)(y - 0.5*constant));
-			ball.setY((int)(x + 0.5*constantX));
+			ball.setX((int)(y));
+			ball.setY((int)(x));
 			y -= 0.5*constant;
 			x += 0.5*constantX;
 			g.fillRect(ball.getX() + 120, ball.getY(), 8, 8);
